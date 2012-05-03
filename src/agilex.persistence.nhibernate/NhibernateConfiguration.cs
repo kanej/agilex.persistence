@@ -15,7 +15,7 @@ namespace agilex.persistence.nhibernate
     {
         public ISessionFactory GetSessionFactory(IDatabaseConfigurationParams configurationParams)
         {
-            :return Fluently.Configure()
+            return Fluently.Configure()
                 .Database(ConfigureDbWith(configurationParams))
                 .Mappings(
                     m =>
@@ -30,8 +30,7 @@ namespace agilex.persistence.nhibernate
 
         IPersistenceConfigurer ConfigureDbWith(IDatabaseConfigurationParams configurationParams)
         {
-            var connectionString =
-                ConfigurationManager.AppSettings[configurationParams.AppSettingKeyForDbConnectionString];
+            var connectionString = configurationParams.ConnectionString;
 
             switch (configurationParams.Dialect)
             {

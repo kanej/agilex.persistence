@@ -5,19 +5,19 @@ namespace agilex.persistence
 {
     public class DatabaseConfigurationParams : IDatabaseConfigurationParams
     {
-        public DatabaseConfigurationParams(string appSettingKeyForDbConnectionString, IEnumerable<Assembly> assemblies,
+        public DatabaseConfigurationParams(string connectionString, IEnumerable<Assembly> assemblies,
                                            string schemaExportLocation, bool blowDbAway, Dialect dialect)
         {
             BlowDbAway = blowDbAway;
             SchemaExportLocation = schemaExportLocation;
             Assemblies = assemblies;
-            AppSettingKeyForDbConnectionString = appSettingKeyForDbConnectionString;
+            ConnectionString = connectionString;
             Dialect = dialect;
         }
 
         #region IDatabaseConfigurationParams Members
 
-        public string AppSettingKeyForDbConnectionString { get; set; }
+        public string ConnectionString { get; set; }
         public IEnumerable<Assembly> Assemblies { get; set; }
         public string SchemaExportLocation { get; set; }
         public bool BlowDbAway { get; set; }

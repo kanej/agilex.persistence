@@ -5,7 +5,7 @@ namespace agilex.persistence
 {
     public interface IDatabaseConfigurationParams
     {
-        string AppSettingKeyForDbConnectionString { get; }
+        string ConnectionString { get; }
         IEnumerable<Assembly> Assemblies { get; }
         string SchemaExportLocation { get; }
         bool BlowDbAway { get; }
