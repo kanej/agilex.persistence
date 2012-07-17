@@ -20,14 +20,7 @@ namespace agilex.persistence.nhibernate
 
         public void Dispose()
         {
-            if (_transaction != null)
-                try
-                {
-                    _transaction.Commit();
-                }
-                catch (Exception)
-                {
-                }
+            Commit();
             _session.Flush();
             _session.Close();
             _session.Dispose();
@@ -86,6 +79,7 @@ namespace agilex.persistence.nhibernate
 
         public void Commit()
         {
+            if (_transaction == null) return;
             if (!_transaction.WasCommitted && !_transaction.WasRolledBack)
                 _transaction.Commit();
         }
