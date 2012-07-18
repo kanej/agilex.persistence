@@ -66,6 +66,12 @@ namespace agilex.persistence.nhibernate
             _session.Save(entity);
         }
 
+        public void SaveAndCommit<T>(T entity) where T : class
+        {
+            Save(entity);
+            Commit();
+        }
+
         public void Delete<T>(T entity) where T : class
         {
             _session.Delete(entity);
