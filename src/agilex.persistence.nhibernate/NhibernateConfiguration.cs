@@ -1,11 +1,9 @@
 using System;
 using System.Configuration;
-using System.Diagnostics;
 using System.Linq;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
-using NHibernate.SqlCommand;
 using NHibernate.Tool.hbm2ddl;
 using Configuration = NHibernate.Cfg.Configuration;
 
@@ -14,6 +12,11 @@ namespace agilex.persistence.nhibernate
     public class NhibernateConfiguration
     {
         public ISessionFactory GetSessionFactory(IDatabaseConfigurationParams configurationParams)
+        {
+            return GetSessionFactory(configurationParams, new NoOpSessionEventSubscriber());
+        }
+
+        public ISessionFactory GetSessionFactory(IDatabaseConfigurationParams configurationParams, ISessionEventSubscriber sessionEventSubscriber)
         {
             return Fluently.Configure()
                 .Database(ConfigureDbWith(configurationParams))
@@ -24,7 +27,7 @@ namespace agilex.persistence.nhibernate
                 .ExposeConfiguration(
                     cfg =>
                     BuildSchema(cfg, configurationParams.BlowDbAway, configurationParams.ShowSql,
-                                configurationParams.SchemaExportLocation))
+                                configurationParams.SchemaExportLocation, sessionEventSubscriber))
                 .BuildSessionFactory();
         }
 
@@ -68,24 +71,23 @@ namespace agilex.persistence.nhibernate
         }
 
         protected virtual void BuildSchema(Configuration config, bool blowDbAway, bool showSql,
-                                           string schemaExportLocation)
+                                           string schemaExportLocation, ISessionEventSubscriber sessionEventSubscriber)
         {
-            if (showSql) config.Interceptor = new LoggingInterceptor();
+            if (sessionEventSubscriber != null && sessionEventSubscriber.GetType() != typeof(NoOpSessionEventSubscriber))
+            {
+                config.Interceptor = new SessionEventPublishingInterceptor(sessionEventSubscriber);
+            }
+            else
+            {
+                if (showSql) config.Interceptor = new LoggingInterceptor();
+            }
+
             if (!blowDbAway) return;
             var schemaExport = new SchemaExport(config);
             if (!string.IsNullOrEmpty(schemaExportLocation))
                 schemaExport.SetOutputFile(schemaExportLocation);
 
             schemaExport.Execute(!string.IsNullOrEmpty(schemaExportLocation), true, false);
-        }
-    }
-
-    public class LoggingInterceptor : EmptyInterceptor
-    {
-        public override SqlString OnPrepareStatement(SqlString sql)
-        {
-            Debug.WriteLine(sql);
-            return base.OnPrepareStatement(sql);
         }
     }
 }
