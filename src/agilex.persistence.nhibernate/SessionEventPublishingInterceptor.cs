@@ -13,12 +13,13 @@ namespace agilex.persistence.nhibernate
 
         public override bool OnSave(object entity, object id, object[] state, string[] propertyNames, NHibernate.Type.IType[] types)
         {
-            _sessionEventSubscriber.OnFlush(entity, id, state, null, propertyNames);
+            _sessionEventSubscriber.OnFlush(entity, id, state ?? new object[] { }, new object[] { }, propertyNames ?? new string[] { });
             return base.OnSave(entity, id, state, propertyNames, types);
         }
+
         public override bool OnFlushDirty(object entity, object id, object[] currentState, object[] previousState, string[] propertyNames, NHibernate.Type.IType[] types)
         {
-            _sessionEventSubscriber.OnFlush(entity, id, currentState, previousState, propertyNames);
+            _sessionEventSubscriber.OnFlush(entity, id, currentState ?? new object[] { }, previousState ?? new object[] { }, propertyNames ?? new string[] { });
             return base.OnFlushDirty(entity, id, currentState, previousState, propertyNames, types);
         }
 
