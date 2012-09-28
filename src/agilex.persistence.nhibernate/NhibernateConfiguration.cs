@@ -4,6 +4,7 @@ using System.Linq;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
+using NHibernate.Cfg.Loquacious;
 using NHibernate.Tool.hbm2ddl;
 using Configuration = NHibernate.Cfg.Configuration;
 
@@ -73,6 +74,8 @@ namespace agilex.persistence.nhibernate
         protected virtual void BuildSchema(Configuration config, bool blowDbAway, bool showSql,
                                            string schemaExportLocation, ISessionEventSubscriber sessionEventSubscriber)
         {
+            config.LinqToHqlGeneratorsRegistry<NhibDoubleExtensionsToHqlGeneratorsRegistry>();
+//            config.LinqToHqlGeneratorsRegistry<NhiibOperatorExtensionsToHqlGeneratorsRegistry>();
             if (sessionEventSubscriber != null && sessionEventSubscriber.GetType() != typeof(NoOpSessionEventSubscriber))
             {
                 config.Interceptor = new SessionEventPublishingInterceptor(sessionEventSubscriber);
