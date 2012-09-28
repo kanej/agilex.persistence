@@ -58,12 +58,10 @@
   <ItemGroup>
     <Compile Include="LoggingInterceptor.cs" />
     <Compile Include="NhibIntExtensions.cs" />
-    <Compile Include="NhibDoubleExtensionsToHqlGeneratorsRegistry.cs" />
-    <Compile Include="NhibDoubleGenerator.cs" />
     <Compile Include="NhibernateConfiguration.cs" />
     <Compile Include="NhibOperatorExtensions.cs" />
-    <Compile Include="NhibOperatorGenerator.cs" />
-    <Compile Include="NhiibOperatorExtensionsToHqlGeneratorsRegistry.cs" />
+    <Compile Include="NhibExtensionsGenerator.cs" />
+    <Compile Include="NhibExtensionsRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="RepositoryFactory.cs" />

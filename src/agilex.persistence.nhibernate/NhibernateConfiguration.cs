@@ -74,8 +74,7 @@ namespace agilex.persistence.nhibernate
         protected virtual void BuildSchema(Configuration config, bool blowDbAway, bool showSql,
                                            string schemaExportLocation, ISessionEventSubscriber sessionEventSubscriber)
         {
-            config.LinqToHqlGeneratorsRegistry<NhibDoubleExtensionsToHqlGeneratorsRegistry>();
-//            config.LinqToHqlGeneratorsRegistry<NhiibOperatorExtensionsToHqlGeneratorsRegistry>();
+            config.LinqToHqlGeneratorsRegistry<NhibExtensionsRegistry>();
             if (sessionEventSubscriber != null && sessionEventSubscriber.GetType() != typeof(NoOpSessionEventSubscriber))
             {
                 config.Interceptor = new SessionEventPublishingInterceptor(sessionEventSubscriber);
