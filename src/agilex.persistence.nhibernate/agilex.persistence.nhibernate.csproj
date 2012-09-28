@@ -57,15 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LoggingInterceptor.cs" />
-    <Compile Include="NhibIntExtensions.cs" />
     <Compile Include="NhibernateConfiguration.cs" />
-    <Compile Include="NhibOperatorExtensions.cs" />
     <Compile Include="NhibExtensionsGenerator.cs" />
     <Compile Include="NhibExtensionsRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
     <Compile Include="RepositoryFactory.cs" />
     <Compile Include="SessionEventPublishingInterceptor.cs" />
+    <Compile Include="UnionExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

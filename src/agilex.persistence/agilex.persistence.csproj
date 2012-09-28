@@ -49,6 +49,7 @@
     <Compile Include="IRepository.cs" />
     <Compile Include="IRepositoryFactory.cs" />
     <Compile Include="ISessionEventSubscriber.cs" />
+    <Compile Include="NhibOperatorExtensions.cs" />
     <Compile Include="NoOpSessionEventSubscriber.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Callbacks\IRepositoryCallbacks.cs" />
