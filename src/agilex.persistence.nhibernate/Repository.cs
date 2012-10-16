@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
-using NHibernate.Criterion;
 using NHibernate.Linq;
 
 namespace agilex.persistence.nhibernate
@@ -38,6 +37,11 @@ namespace agilex.persistence.nhibernate
         }
 
         public T Get<T>(int id) where T : class
+        {
+            return _session.Get<T>(id);
+        }
+
+        public T Get<T>(object id) where T : class
         {
             return _session.Get<T>(id);
         }
@@ -107,6 +111,11 @@ namespace agilex.persistence.nhibernate
         }
 
         public T GetOrThrowNotFound<T>(long id) where T : class
+        {
+            return _GetOrThrow<T>(id);
+        }
+
+        public T GetOrThrowNotFound<T>(object id) where T : class
         {
             return _GetOrThrow<T>(id);
         }

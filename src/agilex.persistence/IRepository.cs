@@ -10,6 +10,7 @@ namespace agilex.persistence
         T Get<T>(Guid id) where T : class;
         T Get<T>(int id) where T : class;
         T Get<T>(long id) where T : class;
+        T Get<T>(object id) where T : class;
         bool Exists<T>(int id) where T : class;
         IEnumerable<T> GetAll<T>() where T : class;
         IQueryable<T> Query<T>() where T : class;
@@ -22,5 +23,6 @@ namespace agilex.persistence
         T GetOrThrowNotFound<T>(Guid id) where T : class;
         T GetOrThrowNotFound<T>(int id) where T : class;
         T GetOrThrowNotFound<T>(long id) where T : class;
+        T GetOrThrowNotFound<T>(object id) where T : class;
     }
 }
