@@ -31,22 +31,7 @@ namespace agilex.persistence.nhibernate
             return _session.QueryOver<T>().ToRowCountQuery().FutureValue<int>().Value;
         }
 
-        public T Get<T>(Guid id) where T : class
-        {
-            return _session.Get<T>(id);
-        }
-
-        public T Get<T>(int id) where T : class
-        {
-            return _session.Get<T>(id);
-        }
-
         public T Get<T>(object id) where T : class
-        {
-            return _session.Get<T>(id);
-        }
-
-        public T Get<T>(long id) where T : class
         {
             return _session.Get<T>(id);
         }
@@ -98,21 +83,6 @@ namespace agilex.persistence.nhibernate
         public void Rollback()
         {
             _transaction.Rollback();
-        }
-
-        public T GetOrThrowNotFound<T>(Guid id) where T : class
-        {
-            return _GetOrThrow<T>(id);
-        }
-
-        public T GetOrThrowNotFound<T>(int id) where T : class
-        {
-            return _GetOrThrow<T>(id);
-        }
-
-        public T GetOrThrowNotFound<T>(long id) where T : class
-        {
-            return _GetOrThrow<T>(id);
         }
 
         public T GetOrThrowNotFound<T>(object id) where T : class

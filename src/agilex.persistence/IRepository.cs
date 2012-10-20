@@ -7,9 +7,6 @@ namespace agilex.persistence
     public interface IRepository : IDisposable
     {        
         int Count<T>() where T : class;
-        T Get<T>(Guid id) where T : class;
-        T Get<T>(int id) where T : class;
-        T Get<T>(long id) where T : class;
         T Get<T>(object id) where T : class;
         bool Exists<T>(int id) where T : class;
         IEnumerable<T> GetAll<T>() where T : class;
@@ -20,9 +17,6 @@ namespace agilex.persistence
         void BeginTransaction();
         void Commit();
         void Rollback();
-        T GetOrThrowNotFound<T>(Guid id) where T : class;
-        T GetOrThrowNotFound<T>(int id) where T : class;
-        T GetOrThrowNotFound<T>(long id) where T : class;
         T GetOrThrowNotFound<T>(object id) where T : class;
     }
 }
