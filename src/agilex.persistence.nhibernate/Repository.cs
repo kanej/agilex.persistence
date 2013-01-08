@@ -9,11 +9,12 @@ namespace agilex.persistence.nhibernate
     public class Repository : IRepository
     {
         readonly ISession _session;
-        ITransaction _transaction;
+        private ITransaction _transaction;
 
         public Repository(ISession session)
         {
             _session = session;
+            _session.FlushMode = FlushMode.Auto;
         }
 
         #region IRepository Members
@@ -21,7 +22,6 @@ namespace agilex.persistence.nhibernate
         public void Dispose()
         {
             Commit();
-            _session.Flush();
             _session.Close();
             _session.Dispose();
         }
@@ -68,7 +68,7 @@ namespace agilex.persistence.nhibernate
         }
 
         public void BeginTransaction()
-        {
+        {            
             _transaction = _session.BeginTransaction();
         }
 
@@ -76,8 +76,11 @@ namespace agilex.persistence.nhibernate
         public void Commit()
         {
             if (_transaction == null) return;
+
             if (!_transaction.WasCommitted && !_transaction.WasRolledBack)
+            {
                 _transaction.Commit();
+            }
         }
 
         public void Rollback()
