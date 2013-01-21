@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuditRepository.cs" />
+    <Compile Include="AuditRepositoryFactory.cs" />
     <Compile Include="CacheStrategy.cs" />
     <Compile Include="CachingRepository.cs" />
     <Compile Include="ICacheStrategy.cs" />

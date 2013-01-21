@@ -21,9 +21,16 @@ namespace agilex.persistence.nhibernate
 
         public void Dispose()
         {
-            Commit();
-            _session.Close();
-            _session.Dispose();
+            try
+            {
+                Commit();
+                _session.Flush();
+            }
+            finally
+            {
+                _session.Close();
+                _session.Dispose();
+            }
         }
 
         public int Count<T>() where T : class
