@@ -17,12 +17,17 @@ namespace agilex.persistence.nhibernate
             return GetSessionFactory(configurationParams, new NoOpSessionEventSubscriber(), null);
         }
 
-        public ISessionFactory GetSessionFactory(IDatabaseConfigurationParams configurationParams, NHibernate.Envers.Configuration.Fluent.FluentConfiguration enversConfig)
+        public ISessionFactory GetSessionFactory(IDatabaseConfigurationParams configurationParams, Action<Configuration> nhibConfigCallback)
         {
-            return GetSessionFactory(configurationParams, new NoOpSessionEventSubscriber(), enversConfig);
+            return GetSessionFactory(configurationParams, new NoOpSessionEventSubscriber(), nhibConfigCallback);
         }
 
-        public ISessionFactory GetSessionFactory(IDatabaseConfigurationParams configurationParams, ISessionEventSubscriber sessionEventSubscriber, NHibernate.Envers.Configuration.Fluent.FluentConfiguration enversConfig)
+        public ISessionFactory GetSessionFactory(IDatabaseConfigurationParams configurationParams, ISessionEventSubscriber sessionEventSubscriber)
+        {
+            return GetSessionFactory(configurationParams, sessionEventSubscriber, null);
+        }
+
+        public ISessionFactory GetSessionFactory(IDatabaseConfigurationParams configurationParams, ISessionEventSubscriber sessionEventSubscriber, Action<Configuration> nhibConfigCallback)
         {
             return Fluently.Configure()
                 .Database(ConfigureDbWith(configurationParams))
@@ -33,7 +38,7 @@ namespace agilex.persistence.nhibernate
                 .ExposeConfiguration(
                     cfg =>
                     BuildSchema(cfg, configurationParams.BlowDbAway, configurationParams.ShowSql,
-                                configurationParams.SchemaExportLocation, sessionEventSubscriber, enversConfig))
+                                configurationParams.SchemaExportLocation, sessionEventSubscriber, nhibConfigCallback))
                 .BuildSessionFactory();
         }
 
@@ -76,7 +81,7 @@ namespace agilex.persistence.nhibernate
             }
         }
 
-        protected virtual void BuildSchema(Configuration config, bool blowDbAway, bool showSql, string schemaExportLocation, ISessionEventSubscriber sessionEventSubscriber, NHibernate.Envers.Configuration.Fluent.FluentConfiguration enversConfig)
+        protected virtual void BuildSchema(Configuration config, bool blowDbAway, bool showSql, string schemaExportLocation, ISessionEventSubscriber sessionEventSubscriber, Action<Configuration> nhibConfigCallback)
         {
 
             config.LinqToHqlGeneratorsRegistry<NhibExtensionsRegistry>();
@@ -89,13 +94,9 @@ namespace agilex.persistence.nhibernate
                 if (showSql) config.Interceptor = new LoggingInterceptor();
             }
 
-            if (enversConfig != null)
+            if (nhibConfigCallback != null)
             {
-                config.SetEnversProperty(ConfigurationKey.StoreDataAtDelete, true);
-                ConfigurationKey.StoreDataAtDelete.SetUserValue(config, true);
-//                config.SetEnversProperty(ConfigurationKey.TrackEntitiesChangedInRevision, true);
-//                ConfigurationKey.TrackEntitiesChangedInRevision.SetUserValue(config, true);
-                config.IntegrateWithEnvers(enversConfig);
+                nhibConfigCallback.Invoke(config);
             }
 
             if (!blowDbAway) return;
